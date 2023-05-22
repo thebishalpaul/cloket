@@ -1,20 +1,23 @@
-import React from 'react';
+// import React, { useEffect } from 'react';
 import './App.css';
 import LoginForm from './components/LoginForm';
 import SignUp from './components/SignUp';
 import { Route, Routes } from 'react-router-dom';
 import UserPage from './components/UserPage';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase'
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from './firebase'
+import { collection, addDoc } from "firebase/firestore";
+import Home from './components/Home';
 
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError,setPasswordError]=useState('');
-  const [emailError,setEmailError]=useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [user, setUser] = useState('');
   const navigate = useNavigate();
 
@@ -24,32 +27,35 @@ function App() {
       .then((userCredential) => {
         clearError();
         alert("Log In Successfull!!");
-        setUser(userCredential.user.email);
+        setUser(userCredential.user);
         navigate("/userPage");
+        // console.log(userCredential.user.uid);
       })
       .catch((error) => {
-        switch(error.code){
+        switch (error.code) {
           case 'auth/invalid-email':
           case 'auth/user-disabled':
           case 'auth/user-not-found':
             setEmailError(error.message);
             break;
-           case 'auth/wrong-password':
-                setPasswordError(error.message);
-                break;  
+          case 'auth/wrong-password':
+            setPasswordError(error.message);
+            break;
+
+          default:
+            break;
         }
       });
   }
+
   const clearInputs = () => {
     setEmail('');
     setPassword('');
   }
-  const clearError=()=>{
+  const clearError = () => {
     setEmailError('');
     setPasswordError('');
   }
-  
-
 
   const handleLogOut = () => {
     auth.signOut().then(() => {
@@ -60,28 +66,103 @@ function App() {
       alert(error.message);
     });
   }
+
+  // Authentication listener
+
+  // const auth = getAuth();
+
+  // const authListener = () => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       clearInputs();
+  //       setUser(user);
+  //       console.log(user);
+  //     } else { setUser('') }
+  //   });
+  // }
+
+  // // //React listener.
+  // useEffect(() => {
+  //   authListener();
+  // }, []);
+
+  // <-----------Signup and create collection in firebase---------->
+
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const create = (e) => {
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        clearError();
+        alert("Sign Up Successful!!")
+        addDoc(collection(db, "users"), {
+          name: name,
+          phone: phone
+        })
+          .then(() => {
+            alert('user created 👍');
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      })
+      .catch((err) => {
+        switch (err.code) {
+          case 'auth/email-already-in-use':
+          case 'auth/invalid-email':
+          case 'auth/internal-error':
+            setEmailError(err.message);
+            break;
+          case 'auth/weak-password':
+            setPasswordError(err.message);
+            break;
+          default:
+            break;
+        }
+      });
+  }
+
   return (
     <>
-      
       <Routes>
-        <Route path="/userPage" element={<UserPage
-          user={user}
-        />} />
-        <Route path="/" element={<LoginForm
-          logIn={logIn}
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          handleLogOut={handleLogOut}
-          passwordError={passwordError}
-          emailError={emailError}
-        />} />
-        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/" element={
+          <Home
+            logIn={logIn}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            handleLogOut={handleLogOut}
+            passwordError={passwordError}
+            emailError={emailError}
+            create={create}
+            name={name}
+            setName={setName}
+            phone={phone}
+            setPhone={setPhone}
+          />
+        }
+        />
+        <Route path="/loginForm" element={
+          <LoginForm
+          />}
+        />
+
+        <Route path="/userPage" element={
+          <UserPage
+            user={user}
+          />}
+        />
+
+        <Route path="/SignUp" element={
+          <SignUp />}
+        />
+
       </Routes>
     </>
   );
-
 }
 
 export default App;
