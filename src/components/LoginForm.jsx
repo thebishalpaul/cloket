@@ -1,15 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import SignUp from './SignUp';
+// import SignUp from './SignUp';
 
 function LoginForm(props) {
 
-      
     return (
         <>
             <Form style={{ width: "50%", margin: "23px" }}>
                 <h3>Log In</h3>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
                         type="email"
@@ -21,7 +20,7 @@ function LoginForm(props) {
                     </Form.Text>
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password" placeholder="Password"
@@ -32,6 +31,7 @@ function LoginForm(props) {
                         {props.passwordError}
                     </Form.Text>
                 </Form.Group>
+
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>
@@ -42,7 +42,7 @@ function LoginForm(props) {
                     SignOut
                 </Button>
             </Form>
-            <SignUp/>
+            {/* <SignUp/> */}
         </>
     );
 }
