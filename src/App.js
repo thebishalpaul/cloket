@@ -1,11 +1,11 @@
-// import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import LoginForm from './components/LoginForm';
 import SignUp from './components/SignUp';
 import { Route, Routes } from 'react-router-dom';
 import UserPage from './components/UserPage';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -24,12 +24,10 @@ function App() {
   const logIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(() => {
         clearError();
         alert("Log In Successfull!!");
-        setUser(userCredential.user);
         navigate("/userPage");
-        // console.log(userCredential.user.uid);
       })
       .catch((error) => {
         switch (error.code) {
@@ -69,22 +67,22 @@ function App() {
 
   // Authentication listener
 
-  // const auth = getAuth();
+  const auth = getAuth();
+//  console.log(auth);
+  const authListener = () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        clearInputs();
+        setUser(user);
+        // console.log(user);
+      } else { setUser('') }
+    });
+  }
 
-  // const authListener = () => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       clearInputs();
-  //       setUser(user);
-  //       console.log(user);
-  //     } else { setUser('') }
-  //   });
-  // }
-
-  // // //React listener.
-  // useEffect(() => {
-  //   authListener();
-  // }, []);
+  // //React listener.
+  useEffect(() => {
+    authListener();
+  }, []);
 
   // <-----------Signup and create collection in firebase---------->
 
@@ -95,6 +93,7 @@ function App() {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
+        console.log(user.uid);
         clearError();
         alert("Sign Up Successful!!")
         addDoc(collection(db, "users"), {
@@ -123,6 +122,7 @@ function App() {
         }
       });
   }
+
 
   return (
     <>

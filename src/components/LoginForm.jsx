@@ -1,6 +1,5 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-// import SignUp from './SignUp';
 
 function LoginForm(props) {
 
@@ -42,7 +41,6 @@ function LoginForm(props) {
                     SignOut
                 </Button>
             </Form>
-            {/* <SignUp/> */}
         </>
     );
 }
