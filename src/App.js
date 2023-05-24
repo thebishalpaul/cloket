@@ -1,16 +1,16 @@
-// import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import LoginForm from './components/LoginForm';
 import SignUp from './components/SignUp';
 import { Route, Routes } from 'react-router-dom';
 import UserPage from './components/UserPage';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from './firebase'
-import { collection, addDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import Home from './components/Home';
 
 function App() {
@@ -21,15 +21,35 @@ function App() {
   const [user, setUser] = useState('');
   const navigate = useNavigate();
 
+
+
+  // Authentication listener
+
+  const auth = getAuth();
+  //  console.log(auth);
+  const authListener = () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        clearInputs();
+        setUser(user);
+        // console.log(user);
+      } else { setUser('') }
+    });
+  }
+
+  // //React listener.
+  useEffect(() => {
+    authListener();
+  }, []);
+
+
   const logIn = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(() => {
         clearError();
         alert("Log In Successfull!!");
-        setUser(userCredential.user);
         navigate("/userPage");
-        // console.log(userCredential.user.uid);
       })
       .catch((error) => {
         switch (error.code) {
@@ -67,24 +87,7 @@ function App() {
     });
   }
 
-  // Authentication listener
 
-  // const auth = getAuth();
-
-  // const authListener = () => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       clearInputs();
-  //       setUser(user);
-  //       console.log(user);
-  //     } else { setUser('') }
-  //   });
-  // }
-
-  // // //React listener.
-  // useEffect(() => {
-  //   authListener();
-  // }, []);
 
   // <-----------Signup and create collection in firebase---------->
 
@@ -94,10 +97,10 @@ function App() {
   const create = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        clearError();
-        alert("Sign Up Successful!!")
-        addDoc(collection(db, "users"), {
+      .then(async (res) => {
+          alert("Sign Up Successful!!")
+        const ref = doc(db, "users", res.user.uid);
+        const docRef = await setDoc(ref, {
           name: name,
           phone: phone
         })
@@ -123,6 +126,7 @@ function App() {
         }
       });
   }
+
 
   return (
     <>
