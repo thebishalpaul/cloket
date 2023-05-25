@@ -22,7 +22,6 @@ function App() {
   const navigate = useNavigate();
 
 
-
   // Authentication listener
 
   const auth = getAuth();
@@ -86,7 +85,6 @@ function App() {
       alert(error.message);
     });
   }
-
 
 
   // <-----------Signup and create collection in firebase---------->
