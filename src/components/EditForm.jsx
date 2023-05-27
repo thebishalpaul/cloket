@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from '../firebase'
+
 function EditForm(props) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  
+  const [name, setName] = useState(props.data.name);
+  const [phone, setPhone] = useState(props.data.phone);
+  const [address, setAddress] = useState(props.data.address);
+ 
   function editDoc(params) {
     const ref = doc(db, "users", props.userId);
     updateDoc(ref, {
       name: params.name,
-      phone: params.phone
+      phone: params.phone,
+      address: params.address
     })
       .then(() => {
         console.log("A New Document Field has been added to an existing document");
@@ -17,20 +20,17 @@ function EditForm(props) {
       .catch(error => {
         console.log(error);
       })
-    
   }
   return (
     <>
-      <h6>Edit Fields</h6>
-      <input type="text" name="" id="" placeholder='name' onChange={(e) => setName(e.target.value)} />
-      <input type="number" name="" id="" placeholder="phone" onChange={(e) =>
-        setPhone(e.target.value)} />
+      <h6>Edit Fields</h6>  
+      <input type="text" name="name" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
+      <input type="number" name="phone" value={phone} placeholder="phone" onChange={(e) => setPhone(e.target.value)} />
+      <input type="text" name="address" value={address} placeholder="address" onChange={(e) => setAddress(e.target.value)} />
       <button onClick={() => {
-        editDoc({ name: name, phone: phone })
+        editDoc({ name: name, phone: phone, address:address })
         props.setEdit(false)
       }}>Done</button>
-    
-      
     </>
   )
 }

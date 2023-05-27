@@ -44,6 +44,7 @@ function UserPage(props) {
       <p>Email: {props.user.email}</p>
       <p>Name: {data.name}</p>
       <p>Phone: {data.phone}</p>
+      <p>Address: {data.address}</p>
       <button
         type="submit"
         className="bg-Cloket max-lg:w-36 sm:w-24 h-auto 
@@ -54,7 +55,7 @@ function UserPage(props) {
         p-3   rounded-sm  "
         onClick={() => setEdit(true)}
       >
-        NEXT
+        EDIT
       </button>
       {edit && <EditForm data={data} setEdit={setEdit} userId={userId} />}
       
