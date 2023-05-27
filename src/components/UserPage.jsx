@@ -10,6 +10,7 @@ function UserPage(props) {
   const docRef = doc(db, "users", userId);
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(false);
+  const [showModal, setShowModal] = React.useState(false);
 
   async function getUserInfo() {
     const docSnap = await getDoc(docRef);
@@ -23,13 +24,22 @@ function UserPage(props) {
   getUserInfo();
   return (
     <>
-      <div id="nav" className="bg-Cloket flex justify-start p-4">
-        <h1 className="font-syne font-semibold text-white text-5xl px-8 ">
+      <div
+        id="nav"
+        className="bg-Cloket flex justify-start p-4 w-full
+          lg:w-full 
+      "
+      >
+        <h1
+          className="font-syne font-semibold text-white text-base px-8 
+        lg:text-5xl"
+        >
           CLOKET
         </h1>
         <ul
-          className="flex gap-8 text-white font-syne font-semibold 
-         items-center mx-20 text-lg"
+          className="flex flex-col gap-8  text-white font-syne font-semibold 
+         items-center lg:mx-20 text-xs
+         lg:gap-8 lg:text-lg lg:flex lg:flex-row mx-5"
         >
           <li>HOME</li>
           <li> BUY</li>
@@ -39,10 +49,60 @@ function UserPage(props) {
         </ul>
         <button
           className="bg-white  rounded-md text-xl
-         w-2/5 mx-20 flex items-center font-syne justify-center"
+         w-2/5 mx-10 lg:mx-12 flex items-center font-syne justify-center text-Cloket font-semibold"
         >
-          Sign in
+          CART
         </button>
+        {/* MODAL */}
+        {showModal ? (
+          <>
+            <div className="justify-center font-syne items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                {/*content*/}
+                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                  {/*header*/}
+                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                    <h3 className="text-3xl font-semibold">EDIT PROFILE</h3>
+                    <button
+                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                      onClick={() => setShowModal(false)}
+                    >
+                      <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                        ×
+                      </span>
+                    </button>
+                  </div>
+                  {/*body*/}
+                  <div className="relative p-6 flex-auto">
+                    {edit && (
+                      <EditForm data={data} setEdit={setEdit} userId={userId} />
+                    )}
+                  </div>
+                  {/*footer*/}
+                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                    <button
+                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </button>
+                    <button
+                      className="bg-Cloket text-white active:bg-purple-700 font-syne font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          </>
+        ) : null}
+
+        {/* MODAL */}
       </div>
       <div className="main flex justify-center items-center gap-14 mt-16">
         <img src={image} className="w-40"></img>
@@ -66,28 +126,13 @@ function UserPage(props) {
             className="bg-Cloket 
             text-xl text-white w-4/12 
             mx-40  "
-            onClick={() => setEdit(true)}
+            onClick={() => setShowModal(true)}
+            // onClick={() => setEdit(true)}
           >
             EDIT
           </button>
         </div>
       </div>
-      {/* <h1>User Details:</h1>
-      <p>Email: {props.user.email}</p>
-      <p>Name: {data.name}</p>
-      <p>Phone: {data.phone}</p> */}
-      {/* <button
-        type="submit"
-        className="bg-Cloket max-lg:w-36 sm:w-24 h-auto 
-        xl:text-xl sm:text-xs mx-2
-        font-syne
-        font-light
-        text-white  
-        p-3   rounded-sm flex items-center justify-center "
-        onClick={() => setEdit(true)}
-      >
-        NEXT
-      </button> */}
       {edit && <EditForm data={data} setEdit={setEdit} userId={userId} />}
 
       {/* <Button variant="primary" onClick={() => setEdit(true)}>
