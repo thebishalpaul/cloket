@@ -163,7 +163,7 @@ function App() {
         <Route path="/SignUp" element={
           <SignUp />}
         />
-
+        
       </Routes>
     </>
   );

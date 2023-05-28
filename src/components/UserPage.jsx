@@ -6,11 +6,11 @@ import EditForm from "./EditForm";
 
 function UserPage(props) {
   let userId = props.user.uid;
-  const docRef = doc(db, "users", userId);
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(false);
 
   async function getUserInfo() {
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       setData(docSnap.data());
@@ -19,7 +19,10 @@ function UserPage(props) {
       console.log("No such document!");
     }
   }
-  getUserInfo();
+  useEffect(() => {
+    getUserInfo();
+  }, [data]);
+
   return (
     <>
       <div id="nav" className="bg-Cloket flex justify-start p-4">
@@ -58,7 +61,7 @@ function UserPage(props) {
         EDIT
       </button>
       {edit && <EditForm data={data} setEdit={setEdit} userId={userId} />}
-      
+
       {/* <Button variant="primary" onClick={() => setEdit(true)}>
         Edit
       </Button>
