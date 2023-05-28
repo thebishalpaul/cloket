@@ -3,7 +3,8 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      margin: ["responsive"],
+      margin: ["hover"],
+      margin: ["responsive", "hover"],
       colors: {
         Cloket: "#7867df",
       },

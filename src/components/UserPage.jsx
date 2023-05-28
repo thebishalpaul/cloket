@@ -34,7 +34,7 @@ function UserPage(props) {
     <>
       <div
         id="nav"
-        className="bg-Cloket flex justify-start p-4 w-full
+        className="bg-Cloket flex justify-start pt-4 pb-2 px-2 lg:p-4 w-full
           lg:w-full 
       "
       >
@@ -49,16 +49,19 @@ function UserPage(props) {
             className="flex font-syne font-semibold sm:items-center sm:gap-8   
           flex-col sm:flex-row text-white"
           >
-            <li className="py-2 sm:py-0 sm:px-2">HOME</li>
+            <li className="py-2 sm:py-0 text-xs sm:text-lg sm:px-2">HOME</li>
             <li className="py-2 sm:py-0 sm:px-2">BUY</li>
             <li className="py-2 sm:py-0 sm:px-2">INITIATIVE</li>
             <li className="py-2 sm:py-0 sm:px-2">CONTACT</li>
             <li className="py-2 sm:py-0 sm:px-2">SWAP</li>
-            {/* <button className="bg-white text-Cloket sm:w-20 lg:flex ">LOGIN</button> */}
+            {/* <button className="bg-white text-Cloket 
+            w-auto sm:w-56 lg:flex mx-6 sm:mx-72">
+              LOGIN
+            </button> */}
             <button
-              className=" w-3/5 h-10  flex sm:block bg-white  
+              className=" w-3/5 h-6 sm:h-10  flex sm:block bg-white  
               rounded-md text-xs lg:text-xl
-         lg:w-32  mx-1 sm:mx-40  lg:flex  items-center font-syne 
+         lg:w-32  mx-6 sm:mx-44  lg:flex  items-center font-syne 
          justify-center text-Cloket font-semibold"
             >
               CART
@@ -163,12 +166,7 @@ function UserPage(props) {
           </button>
         </div>
       </div>
-      {/* {edit && <EditForm data={data} setEdit={setEdit} userId={userId} />} */}
-
-      {/* <Button variant="primary" onClick={() => setEdit(true)}>
-        Edit
-      </Button>
-      {edit && <EditForm data={data} setEdit={setEdit} userId={userId} />} */}
+    
     </>
   );
 }
