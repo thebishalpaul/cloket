@@ -91,6 +91,7 @@ function App() {
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState("Nill");
 
   const create = (e) => {
     e.preventDefault();
@@ -100,7 +101,8 @@ function App() {
         const ref = doc(db, "users", res.user.uid);
         const docRef = await setDoc(ref, {
           name: name,
-          phone: phone
+          phone: phone,
+          address:address
         })
           .then(() => {
             alert('user created 👍');
@@ -161,7 +163,7 @@ function App() {
         <Route path="/SignUp" element={
           <SignUp />}
         />
-
+        
       </Routes>
     </>
   );

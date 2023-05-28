@@ -24,11 +24,14 @@ function UserPage(props) {
       setData(docSnap.data());
     }
   }
+  useEffect(() => {
+    getUserInfo();
+  }, [data]);
   const runBothFunctions = () => {
     setShowModal(true);
     setEdit(true);
   };
-  getUserInfo();
+  // getUserInfo();
 
   return (
     <>
@@ -150,7 +153,7 @@ function UserPage(props) {
             {props.user.email}
           </p>
           <p className="font-syne text-sm font-light w-60 ">
-            Lorem ipsum dolor sit amet consectetuc
+            {data.address}
           </p>
 
           <button
