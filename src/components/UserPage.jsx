@@ -11,7 +11,7 @@ function UserPage(props) {
   const docRef = doc(db, "users", userId);
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(false);
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [isContentVisible, setIsContentVisible] = useState(false);
 
   const toggleContent = () => {
@@ -27,6 +27,7 @@ function UserPage(props) {
   useEffect(() => {
     getUserInfo();
   }, [data]);
+  
   const runBothFunctions = () => {
     setShowModal(true);
     setEdit(true);
@@ -78,7 +79,7 @@ function UserPage(props) {
         >
           <IoIosMenu />
         </button>
-
+    
         {/* MODAL */}
         {showModal ? (
           <>
@@ -122,7 +123,9 @@ function UserPage(props) {
                     <button
                       className="bg-Cloket text-white active:bg-purple-700 font-syne font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={() => setShowModal(false)}
+                      onClick={() => {
+                        setShowModal(false)
+                      }}
                     >
                       Save Changes
                     </button>
