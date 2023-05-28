@@ -22,7 +22,7 @@ function EditForm(props) {
   }
   return (
     <>
-      <h6>Edit Fields</h6>
+      <h6 className="font-syne">Edit Fields</h6>
       <input
         type="text"
         name=""
@@ -38,7 +38,7 @@ function EditForm(props) {
         onChange={(e) => setPhone(e.target.value)}
       />
       <button
-        className="bg-Cloket text-white"
+        className="bg-Cloket text-white font-syne"
         onClick={() => {
           editDoc({ name: name, phone: phone });
           props.setEdit(false);

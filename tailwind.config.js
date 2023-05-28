@@ -3,6 +3,7 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      margin: ["responsive"],
       colors: {
         Cloket: "#7867df",
       },
@@ -18,6 +19,9 @@ module.exports = {
       },
       width: {
         12: "12px",
+      },
+      width: {
+        10: "10px",
       },
       width: {
         200: "202px",

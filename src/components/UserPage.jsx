@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import EditForm from "./EditForm";
 import image from "./icon.png";
+import { IoIosMenu } from "react-icons/io";
+import { BsCartFill } from "react-icons/fa";
 
 function UserPage(props) {
   let userId = props.user.uid;
@@ -11,17 +12,24 @@ function UserPage(props) {
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(false);
   const [showModal, setShowModal] = React.useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
+
+  const toggleContent = () => {
+    setIsContentVisible(!isContentVisible);
+  };
 
   async function getUserInfo() {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       setData(docSnap.data());
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
     }
   }
+  const runBothFunctions = () => {
+    setShowModal(true);
+    setEdit(true);
+  };
   getUserInfo();
+
   return (
     <>
       <div
@@ -31,35 +39,56 @@ function UserPage(props) {
       "
       >
         <h1
-          className="font-syne font-semibold text-white text-base px-8 
+          className="font-syne font-semibold text-white text-2xl sm:px-8 px-4 
         lg:text-5xl"
         >
           CLOKET
         </h1>
-        <ul
-          className="flex flex-col gap-8  text-white font-syne font-semibold 
-         items-center lg:mx-20 text-xs
-         lg:gap-8 lg:text-lg lg:flex lg:flex-row mx-5"
-        >
-          <li>HOME</li>
-          <li> BUY</li>
-          <li>INITIATIVE</li>
-          <li>CONTACT</li>
-          <li>SWAP</li>
-        </ul>
+        <div className={`sm:flex ${isContentVisible ? "block" : "hidden"}`}>
+          <ul
+            className="flex font-syne font-semibold sm:items-center sm:gap-8   
+          flex-col sm:flex-row text-white"
+          >
+            <li className="py-2 sm:py-0 sm:px-2">HOME</li>
+            <li className="py-2 sm:py-0 sm:px-2">BUY</li>
+            <li className="py-2 sm:py-0 sm:px-2">INITIATIVE</li>
+            <li className="py-2 sm:py-0 sm:px-2">CONTACT</li>
+            <li className="py-2 sm:py-0 sm:px-2">SWAP</li>
+            {/* <button className="bg-white text-Cloket sm:w-20 lg:flex ">LOGIN</button> */}
+            <button
+              className=" w-3/5 h-10  flex sm:block bg-white  
+              rounded-md text-xs lg:text-xl
+         lg:w-32  mx-1 sm:mx-40  lg:flex  items-center font-syne 
+         justify-center text-Cloket font-semibold"
+            >
+              CART
+            </button>
+          </ul>
+        </div>
+
+        {/* SHOW MENU : It shows only in small screen(Mobile) */}
         <button
-          className="bg-white  rounded-md text-xl
-         w-2/5 mx-10 lg:mx-12 flex items-center font-syne justify-center text-Cloket font-semibold"
+          className="block sm:hidden font-syne rounded-md text-base 
+          cursor-pointer p-2 px-10 w-9 h-10  bg-white text-Cloket
+           mx-2"
+          onClick={toggleContent}
         >
-          CART
+          <IoIosMenu />
         </button>
+
         {/* MODAL */}
         {showModal ? (
           <>
-            <div className="justify-center font-syne items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div
+              className="justify-center font-syne items-center flex overflow-x-hidden 
+            overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+            >
               <div className="relative w-auto my-6 mx-auto max-w-3xl">
                 {/*content*/}
-                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div
+                  className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white 
+                outline-none focus:outline-none"
+                >
                   {/*header*/}
                   <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-3xl font-semibold">EDIT PROFILE</h3>
@@ -126,14 +155,15 @@ function UserPage(props) {
             className="bg-Cloket 
             text-xl text-white w-4/12 
             mx-40  "
-            onClick={() => setShowModal(true)}
-            // onClick={() => setEdit(true)}
+            onClick={runBothFunctions}
+            // onClick={() => setShowModal(true) setEdit(true)}
+            // // onClick={() => setEdit(true)}
           >
             EDIT
           </button>
         </div>
       </div>
-      {edit && <EditForm data={data} setEdit={setEdit} userId={userId} />}
+      {/* {edit && <EditForm data={data} setEdit={setEdit} userId={userId} />} */}
 
       {/* <Button variant="primary" onClick={() => setEdit(true)}>
         Edit
