@@ -31,7 +31,7 @@ function UserPage(props) {
   const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG'];
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState(null);
-  const [imgError,setImgError]=useState("");
+  const [imgError, setImgError] = useState("");
 
   const handleImageChange = (e) => {
     let selectedFile = e.target.files[0];
@@ -78,9 +78,14 @@ function UserPage(props) {
       <div className="main flex justify-center items-center gap-14 mt-16">
 
         {/* profile picture */}
-        <Avatar src={url} sx={{ width: 150, height: 150 }} />
-        <input type="file" onChange={handleImageChange} />
-        <button onClick={handleSubmit}>Submit</button>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Avatar src={url} sx={{ width: 150, height: 150 }} />
+          <input type="file" onChange={handleImageChange} />
+          {imgError && <>
+            <div className='error-msg' style={{ color: "red" }}>{imgError}</div>
+          </>}
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
         {/* --------------- */}
 
         <div className="user-info flex flex-col font-syne font-bold  ">
