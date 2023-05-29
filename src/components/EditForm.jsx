@@ -72,6 +72,7 @@ function EditForm(props) {
                     onClick={() => {
                         editDoc({ name: name, phone: phone, address: address });
                         props.setEdit(false);
+                        props.getUserInfo();
                     }
                     }
                   >

@@ -23,7 +23,6 @@ function App() {
 
 
   // Authentication listener
-
   const auth = getAuth();
   //  console.log(auth);
   const authListener = () => {
@@ -98,7 +97,7 @@ function App() {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (res) => {
           alert("Sign Up Successful!!")
-        const ref = doc(db, "users", res.user.uid);
+        const ref = doc(db,"users",res.user.uid);
         const docRef = await setDoc(ref, {
           name: name,
           phone: phone,
@@ -126,7 +125,6 @@ function App() {
         }
       });
   }
-
 
   return (
     <>

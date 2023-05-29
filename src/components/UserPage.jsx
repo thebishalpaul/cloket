@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 import Modal from "./Modal";
 import image from "./icon.png";
 import NavBar from "./NavBar";
@@ -8,7 +8,9 @@ import { IoIosMenu } from "react-icons/io";
 import { BsCartFill } from "react-icons/fa";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import Avatar from '@mui/material/Avatar';
+
 function UserPage(props) {
   let userId = props.user.uid;
   const docRef = doc(db, "users", userId);
@@ -25,14 +27,14 @@ function UserPage(props) {
 
   useEffect(() => {
     getUserInfo();
-  }, [data]);
+  }, []);
 
   // upload profile pic
   const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG'];
   const [image, setImage] = useState(null);
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState(data.dpUrl);
+  // console.log(data.dpUrl);
   const [imgError, setImgError] = useState("");
-
   const handleImageChange = (e) => {
     let selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -48,11 +50,13 @@ function UserPage(props) {
     }
   };
 
-  const handleSubmit = (e) => {
+
+  const handleUpload = (e) => {
     e.preventDefault();
     const imageRef = ref(storage, `DPimages/${image.name}`);
     uploadBytes(imageRef, image)
       .then(() => {
+        const ref = doc(db, "users", userId);
         getDownloadURL(imageRef)
           .then((url) => {
             setUrl(url);
@@ -60,11 +64,20 @@ function UserPage(props) {
           .catch((error) => {
             console.log(error.message, "error getting the image url");
           });
-        setImage(null);
+        updateDoc(ref, {
+          dpUrl: url
+        }).then(() => {
+          console.log('dp added');
+        })
+          .catch((error) => {
+            alert(error.message);
+            // setImage(null);
+          });
       })
       .catch((error) => {
         console.log(error.message);
       });
+    setImage("");
   };
   // ------------------
   const runBothFunctions = () => {
@@ -80,11 +93,14 @@ function UserPage(props) {
         {/* profile picture */}
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Avatar src={url} sx={{ width: 150, height: 150 }} />
+          {console.log(url)}
           <input type="file" onChange={handleImageChange} />
+
+          {/* to display image error i.e. if upload other than jpg,png */}
           {imgError && <>
             <div className='error-msg' style={{ color: "red" }}>{imgError}</div>
           </>}
-          <button onClick={handleSubmit}>Submit</button>
+          <button onClick={handleUpload}>Upload</button>
         </div>
         {/* --------------- */}
 
@@ -114,6 +130,7 @@ function UserPage(props) {
             userId={userId}
             showModal={showModal}
             setShowModal={setShowModal}
+            getUserInfo={getUserInfo}
           />}
         </div>
       </div>
