@@ -34,9 +34,9 @@ function LoginForm(props) {
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Remember me" />
                 </Form.Group>
-                <Button style={{margin:"8px"}} variant="primary" type="submit" onClick={props.logIn}>
+               {!props.user && <Button style={{margin:"8px"}} variant="primary" type="submit" onClick={props.logIn}>
                     LogIn
-                </Button>
+                </Button>}
                 <Button variant="primary" onClick={props.handleLogOut}>
                     SignOut
                 </Button>

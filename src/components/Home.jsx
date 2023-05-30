@@ -13,6 +13,7 @@ function Home(props) {
               handleLogOut={props.handleLogOut}
               passwordError={props.passwordError}
               emailError={props.emailError}
+              user={props.user}
             />
             <SignUp
              create={props.create}

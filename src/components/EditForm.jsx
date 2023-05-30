@@ -48,16 +48,7 @@ function EditForm(props) {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
             />
-            {/* <button
-                className="bg-Cloket text-white active:bg-purple-700 font-syne font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                onClick={() => {
-                    editDoc({ name: name, phone: phone, address: address });
-                    props.setEdit(false);
-                }}
-            >
-                Done
-            </button> */}
+            
             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -72,7 +63,6 @@ function EditForm(props) {
                     onClick={() => {
                         editDoc({ name: name, phone: phone, address: address });
                         props.setEdit(false);
-                        props.getUserInfo();
                     }
                     }
                   >

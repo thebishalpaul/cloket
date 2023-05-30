@@ -26,7 +26,7 @@ function Modal(props) {
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
                   {props.edit && (
-                    <EditForm data={props.data} setEdit={props.setEdit} userId={props.userId} getUserInfo={props.getUserInfo}/>
+                    <EditForm data={props.data} setEdit={props.setEdit} userId={props.userId} />
                   )}
                 </div>
                 {/*footer*/}

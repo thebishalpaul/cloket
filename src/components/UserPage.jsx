@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import Modal from "./Modal";
-import image from "./icon.png";
 import NavBar from "./NavBar";
-import { IoIosMenu } from "react-icons/io";
-import { BsCartFill } from "react-icons/fa";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
 import Avatar from '@mui/material/Avatar';
-
+import { IconButton } from '@mui/material';
 function UserPage(props) {
   let userId = props.user.uid;
   const docRef = doc(db, "users", userId);
@@ -25,16 +21,16 @@ function UserPage(props) {
     }
   }
 
-  useEffect(() => {
-    getUserInfo();
-  }, []);
 
   // upload profile pic
   const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG'];
   const [image, setImage] = useState(null);
-  const [url, setUrl] = useState(data.dpUrl);
-  // console.log(data.dpUrl);
+  const [photoURL, setPhotoURL] = useState("");
   const [imgError, setImgError] = useState("");
+
+  //used to enable disable upload button
+  const [loading, setLoading] = useState(false);
+
   const handleImageChange = (e) => {
     let selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -45,40 +41,35 @@ function UserPage(props) {
       else {
         setImage("");
         setImgError('Please select a valid image file type (png or jpg)')
-        console.log("invalid image");
       }
     }
   };
 
 
-  const handleUpload = (e) => {
-    e.preventDefault();
-    const imageRef = ref(storage, `DPimages/${image.name}`);
-    uploadBytes(imageRef, image)
-      .then(() => {
-        const ref = doc(db, "users", userId);
-        getDownloadURL(imageRef)
-          .then((url) => {
-            setUrl(url);
-          })
-          .catch((error) => {
-            console.log(error.message, "error getting the image url");
-          });
-        updateDoc(ref, {
-          dpUrl: url
-        }).then(() => {
-          console.log('dp added');
-        })
-          .catch((error) => {
-            alert(error.message);
-            // setImage(null);
-          });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-    setImage("");
+  const handleUpload = () => {
+    upload(image, props.user, setLoading);
   };
+
+  async function upload(file, currentUser, setLoading) {
+    const fileRef = ref(storage, `DPimages/${image.name}`);
+
+    setLoading(true);
+
+    await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+
+    props.updateProfile(currentUser, { photoURL });
+
+    setLoading(false);
+    alert("Uploaded file!");
+  }
+
+  useEffect(() => {
+    if (props.user?.photoURL) {
+      setPhotoURL(props.user.photoURL);
+    }
+    getUserInfo();
+  }, [data, props.user]);
   // ------------------
   const runBothFunctions = () => {
     setShowModal(true);
@@ -89,18 +80,17 @@ function UserPage(props) {
     <>
       <NavBar />
       <div className="main flex justify-center items-center gap-14 mt-16">
-
         {/* profile picture */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Avatar src={url} sx={{ width: 150, height: 150 }} />
-          {console.log(url)}
+          <Avatar src={photoURL} sx={{ width: 150, height: 150 }} />
           <input type="file" onChange={handleImageChange} />
 
           {/* to display image error i.e. if upload other than jpg,png */}
           {imgError && <>
             <div className='error-msg' style={{ color: "red" }}>{imgError}</div>
           </>}
-          <button onClick={handleUpload}>Upload</button>
+
+          <button disabled={loading || !image} onClick={handleUpload} style={{ color: "blue" }}>Upload</button>
         </div>
         {/* --------------- */}
 
@@ -130,7 +120,7 @@ function UserPage(props) {
             userId={userId}
             showModal={showModal}
             setShowModal={setShowModal}
-            getUserInfo={getUserInfo}
+          // getUserInfo={getUserInfo}
           />}
         </div>
       </div>

@@ -8,8 +8,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from './firebase'
+import { createUserWithEmailAndPassword,updateProfile } from 'firebase/auth';
+import { db } from './firebase'
 import { setDoc, doc } from "firebase/firestore";
 import Home from './components/Home';
 
@@ -90,7 +90,7 @@ function App() {
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState("Nill");
+  const [address, setAddress] = useState("Adress Not Entered");
 
   const create = (e) => {
     e.preventDefault();
@@ -98,7 +98,7 @@ function App() {
       .then(async (res) => {
           alert("Sign Up Successful!!")
         const ref = doc(db,"users",res.user.uid);
-        const docRef = await setDoc(ref, {
+        await setDoc(ref, {
           name: name,
           phone: phone,
           address:address
@@ -144,6 +144,7 @@ function App() {
             setName={setName}
             phone={phone}
             setPhone={setPhone}
+            user={user}
           />
         }
         />
@@ -155,6 +156,7 @@ function App() {
         <Route path="/userPage" element={
           <UserPage
             user={user}
+            updateProfile={updateProfile}
           />}
         />
 
