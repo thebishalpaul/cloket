@@ -5,7 +5,7 @@ import EditForm from "./EditForm";
 import image from "./icon.png";
 import NavBar from "./NavBar";
 import { IoIosMenu } from "react-icons/io";
-import { BsCartFill } from "react-icons/fa";
+import { AiFillEdit } from "react-icons/ai";
 
 function UserPage(props) {
   let userId = props.user.uid;
@@ -13,7 +13,6 @@ function UserPage(props) {
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(false);
   const [showModal, setShowModal] = React.useState(false);
-  
 
   async function getUserInfo() {
     const docSnap = await getDoc(docRef);
@@ -83,31 +82,45 @@ function UserPage(props) {
 
       {/* MODAL */}
 
-      <div className="main flex justify-center items-center gap-14 mt-16">
-        <img src={image} className="w-40"></img>
-        <div className="user-info flex flex-col font-syne font-bold  ">
-          <p className="font-syne text-4xl mb-1">{data.name}</p>
-          <p className="font-syne text-2xl mb-1 text-Cloket">
+      <div
+        className="main flex   justify-center items-center 
+      gap-8 lg:gap-14 lg:mt-7 mt-10"
+      >
+        <img src={image} className="w-20 lg:w-40"></img>
+        <div
+          className="user-info flex flex-col font-syne font-bold 
+         sm:justify-normal 
+         sm:items-stretch pt-5  w-36 lg:w-auto"
+        >
+          <p className="font-syne  text-lg sm:text-4xl mb-1">{data.name}</p>
+          <p className="font-syne  text-sm sm:text-2xl mb-1 text-Cloket">
             +91-{data.phone}
           </p>
           <p
-            className="underline underline-offset-4 mb-2 text-Cloket text-2xl
+            className="underline underline-offset-4 text-xs mb-2
+             text-Cloket sm:text-2xl
            "
           >
             {props.user.email}
           </p>
-          <p className="font-syne text-sm font-light w-60 ">{data.address}</p>
+          <p
+            className="font-syne text-sm font-light sm:w-60 w-auto  
+            sm:text-left p-0 "
+          >
+            Lorem ipsum dolor sit amet m.
+          </p>
 
           <button
             type="submit"
             className="bg-Cloket 
-            text-xl text-white w-4/12 
-            mx-40  "
+             text-white  w-7  px-1 flex items-center sm:w-6 mx-0
+            sm:mx-40   rounded-md h-6 "
             //onClick={} ! Eikhane pass korte hobe
             // onClick={() => setShowModal(true) setEdit(true)}
             // // onClick={() => setEdit(true)}
           >
-            EDIT
+            {/* <IoIosMenu className="-px-2" /> */}
+            <AiFillEdit className="mr-0" />
           </button>
         </div>
       </div>
