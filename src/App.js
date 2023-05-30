@@ -24,7 +24,6 @@ function App() {
 
   // Authentication listener
   const auth = getAuth();
-  //  console.log(auth);
   const authListener = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -105,6 +104,7 @@ function App() {
         })
           .then(() => {
             alert('user created 👍');
+            navigate("/userPage");
           })
           .catch((error) => {
             alert(error.message);

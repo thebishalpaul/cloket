@@ -7,6 +7,7 @@ import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Avatar from '@mui/material/Avatar';
 import { IconButton } from '@mui/material';
+
 function UserPage(props) {
   let userId = props.user.uid;
   const docRef = doc(db, "users", userId);
@@ -65,7 +66,7 @@ function UserPage(props) {
   }
 
   useEffect(() => {
-    if (props.user?.photoURL) {
+    if (props.user && props.user.photoURL) {
       setPhotoURL(props.user.photoURL);
     }
     getUserInfo();
