@@ -5,7 +5,9 @@ import Modal from "./Modal";
 import NavBar from "./NavBar";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import Avatar from '@mui/material/Avatar';
+import Avatar from "@mui/material/Avatar";
+import { FiCamera } from "react-icons/fi";
+import { AiFillEdit } from "react-icons/ai";
 
 function UserPage(props) {
   let userId = props.user.uid;
@@ -13,6 +15,7 @@ function UserPage(props) {
   const [data, setData] = useState("");
   const [edit, setEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showDPModal, setShowDPModal] = useState(false);
 
   async function getUserInfo() {
     const docSnap = await getDoc(docRef);
@@ -21,12 +24,12 @@ function UserPage(props) {
     }
   }
 
-
   // upload profile pic
-  const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG'];
+  const types = ["image/jpg", "image/jpeg", "image/png", "image/PNG"];
   const [image, setImage] = useState(null);
   const [photoURL, setPhotoURL] = useState("");
   const [imgError, setImgError] = useState("");
+
 
   //used to enable disable upload button
   const [loading, setLoading] = useState(false);
@@ -36,15 +39,13 @@ function UserPage(props) {
     if (selectedFile) {
       if (selectedFile && types.includes(selectedFile.type)) {
         setImage(selectedFile);
-        setImgError('');
-      }
-      else {
+        setImgError("");
+      } else {
         setImage("");
-        setImgError('Please select a valid image file type (png or jpg)')
+        setImgError("Please select a valid image file type (png or jpg)");
       }
     }
   };
-
 
   const handleUpload = () => {
     upload(image, props.user, setLoading);
@@ -61,7 +62,6 @@ function UserPage(props) {
     props.updateProfile(currentUser, { photoURL });
 
     setLoading(false);
-    alert("Uploaded file!");
   }
 
   useEffect(() => {
@@ -79,49 +79,126 @@ function UserPage(props) {
   return (
     <>
       <NavBar />
-      <div className="main flex justify-center items-center gap-14 mt-16">
-        {/* profile picture */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Avatar src={photoURL} sx={{ width: 150, height: 150 }} />
-          <input type="file" onChange={handleImageChange} />
+      <div
+        className="main flex sm:flex-row   w-full justify-center
+       items-center sm:gap-0 gap-4 sm:mx-0  
+       -mx-4 mt-16"
+      >
+        <div className=" relative flex flex-col mb-1 sm:w-56">
+          {/* Profile Picture */}
+          <Avatar
+            src={photoURL}
+            sx={{
+              width: 150,
+              height: 150,
+              "@media (max-width: 768px)": {
+                width: 50,
+                height: 50,
+              },
+            }}
+            onClick={() => setShowDPModal(true)}
+          />
 
-          {/* to display image error i.e. if upload other than jpg,png */}
-          {imgError && <>
-            <div className='error-msg' style={{ color: "red" }}>{imgError}</div>
-          </>}
+          {showDPModal ? (
+            <>
+              <div
+                className="justify-center font-syne items-center flex overflow-x-hidden 
+            overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none "
+              >
+                <div className="relative w-auto my-6 mx-auto max-w-3xl ">
+                  {/*content*/}
+                  <div
+                    className="border-0 rounded-lg shadow-lg  
+                relative flex flex-col sm:w-full bg-white w-64
+                outline-none focus:outline-none"
+                  >
+                    {/*header*/}
+                    <div className="flex items-start justify-between p-5 border-b 
+                border-solid border-slate-200 
+                rounded-t">
+                      <h3 className="text-lg sm:text-3xl font-semibold">Update Profile</h3>
+                    </div>
+                    {/*body*/}
+                    <div className="relative p-6 flex-auto">
+                      {/* {props.edit && (
+                        <EditForm data={props.data} setEdit={props.setEdit}
+                          userId={props.userId} />
+                      )} */}
+                    </div>
+                    {/*footer*/}
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null}
 
-          <button disabled={loading || !image} onClick={handleUpload} style={{ color: "blue" }}>Upload</button>
+          {/* Upload Button */}
+          {/* <label
+            htmlFor="uploadButton"
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <input
+              type="file"
+              id="uploadButton"
+              onChange={handleImageChange}
+              className="opacity-0 cursor-pointer w-44 h-full"
+            />
+            <div className="-mx-26 ">
+              <button
+                disabled={loading || !image}
+                onClick={handleUpload}
+                className="text-white block bg-Cloket sm:text-base text-xs 
+              font-syne p-1"
+              >
+                <FiCamera size={18} style={{ marginRight: "0" }} />
+              </button>
+            </div>
+          </label> */}
         </div>
+
         {/* --------------- */}
 
-        <div className="user-info flex flex-col font-syne font-bold  ">
-          <p className="font-syne text-4xl mb-1">{data.name}</p>
-          <p className="font-syne text-2xl mb-1 text-Cloket">
+        {/*-----MAIN------*/}
+
+        <div className="user-info flex flex-col -mx-2 font-syne font-bold ">
+          <p className="font-syne text-sm sm:text-4xl mb-1">{data.name}</p>
+          <p className="font-syne  text-xs sm:text-2xl mb-1 text-Cloket">
             +91-{data.phone}
           </p>
-          <p className="underline underline-offset-4 mb-2 text-Cloket text-2xl">
+          <p className="underline underline-offset-4 mb-2 text-Cloket  text-xs sm:text-2xl">
             {props.user.email}
           </p>
-          <p className="font-syne text-sm font-light w-60 ">{data.address}</p>
-
+          <p
+            className="font-syne text-sm font-light sm:w-60 w-auto  
+            sm:text-left p-0 "
+          >
+            {data.address}
+          </p>
+        </div>
+        <div
+          className=" 
+        sm:mb-28 sm:-mx-5    mb-20 -mx-14"
+        >
           <button
             type="submit"
             className="bg-Cloket 
-            text-xl text-white w-4/12 
-            mx-40"
+             text-white sm:w-auto w-auto  text-xs p-1 sm:text-xl  
+            sm:p-1 rounded-lg "
             onClick={runBothFunctions}
           >
-            EDIT
+            <AiFillEdit className="mr-0" />
           </button>
-          {edit && <Modal
-            data={data}
-            edit={edit}
-            setEdit={setEdit}
-            userId={userId}
-            showModal={showModal}
-            setShowModal={setShowModal}
-          // getUserInfo={getUserInfo}
-          />}
+          {edit && (
+            <Modal
+              data={data}
+              edit={edit}
+              setEdit={setEdit}
+              userId={userId}
+              showModal={showModal}
+              setShowModal={setShowModal}
+            // getUserInfo={getUserInfo}
+            />
+          )}
         </div>
       </div>
     </>
