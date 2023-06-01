@@ -6,7 +6,6 @@ import NavBar from "./NavBar";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Avatar from '@mui/material/Avatar';
-import { IconButton } from '@mui/material';
 
 function UserPage(props) {
   let userId = props.user.uid;
