@@ -13,7 +13,7 @@ function Status() {
         <>
             <div className="header" style={{ display: "flex" }}>
                 <div className="status">
-                    Satatus: {item}
+                    Status: {item}
                 </div>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                     <InputLabel id="demo-select-small-label">Select Item</InputLabel>
@@ -44,12 +44,14 @@ function Status() {
                 <div className="third">
                     <p>ready to list</p>
                     <p>date here</p>
-
-                    <p>offered price</p>
-                    <p>70 swap</p>
-
-                    <button className="accept">Accept</button>
-                    <button className="reject">Reject</button>
+                    <div className="left">
+                        <p>offered price</p>
+                        <p>70 swap</p>
+                    </div>
+                    <div className="right">
+                        <button className="accept">Accept</button>
+                        <button className="reject">Reject</button>
+                    </div>
                 </div>
             </div>
         </>
