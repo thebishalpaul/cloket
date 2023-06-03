@@ -13,7 +13,7 @@ function UserPage(props) {
   const [data, setData] = useState({});
   const [edit, setEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  
+
   async function getUserInfo() {
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
@@ -125,7 +125,9 @@ function UserPage(props) {
           />}
         </div>
       </div>
-      <Status/>
+      <Status
+        data={data}
+      />
     </>
   );
 }

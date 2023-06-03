@@ -19,7 +19,7 @@ const NavBar = () => {
           className="font-syne font-semibold text-white text-2xl sm:px-8 px-4 
         lg:text-5xl"
         >
-          CLOKET
+          <a href="/" style={{ textDecoration: "none", color: "white" }}>CLOKET</a>
         </h1>
         <div className={`sm:flex ${isContentVisible ? "block" : "hidden"}`}>
           <ul

@@ -3,7 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-function Status() {
+function Status(props) {
     const [item, setItem] = React.useState('');
 
     const handleChange = (event) => {
@@ -27,7 +27,7 @@ function Status() {
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={props.data.brand}>{props.data.brand}</MenuItem>
                         <MenuItem value={20}>20</MenuItem>
                     </Select>
                 </FormControl>
