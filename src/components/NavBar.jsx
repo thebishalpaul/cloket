@@ -22,7 +22,7 @@ const NavBar = () => {
 
         lg:text-5xl"
         >
-          CLOKET
+          <a href="/" style={{ textDecoration: "none", color: "white" }}>CLOKET</a>
         </h1>
         <div className={`sm:flex ${isContentVisible ? "block" : "hidden"}`}>
           <ul

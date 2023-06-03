@@ -8,15 +8,17 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Avatar from "@mui/material/Avatar";
 import { FiCamera } from "react-icons/fi";
 import { AiFillEdit } from "react-icons/ai";
+import Avatar from '@mui/material/Avatar';
+import Status from "./Status";
 
 function UserPage(props) {
   let userId = props.user.uid;
-  const docRef = doc(db, "users", userId);
-  const [data, setData] = useState("");
+  const [data, setData] = useState({});
   const [edit, setEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   async function getUserInfo() {
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       setData(docSnap.data());
@@ -235,6 +237,9 @@ function UserPage(props) {
           </div>
         </div>
       </div>
+      <Status
+        data={data}
+      />
     </>
   );
 }
