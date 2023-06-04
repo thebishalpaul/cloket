@@ -9,29 +9,31 @@ import Avatar from '@mui/material/Avatar';
 import Status from "./Status";
 
 function UserPage(props) {
-  let userId = props.user.uid;
   const [data, setData] = useState({});
   const [edit, setEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  const [dataloading, setDataLoading] = useState(true);
+  
+  
+  let userId = props.user.uid;
   async function getUserInfo() {
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       setData(docSnap.data());
+      setDataLoading(false);
     }
   }
-
 
   // upload profile pic
   const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG'];
   const [image, setImage] = useState(null);
   const [photoURL, setPhotoURL] = useState("");
   const [imgError, setImgError] = useState("");
-
+  
   //used to enable disable upload button
   const [loading, setLoading] = useState(false);
-
+  
   const handleImageChange = (e) => {
     let selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -45,43 +47,47 @@ function UserPage(props) {
       }
     }
   };
-
-
+  
+  
   const handleUpload = () => {
     upload(image, props.user, setLoading);
   };
-
+  
   async function upload(file, currentUser, setLoading) {
     const fileRef = ref(storage, `DPimages/${image.name}`);
-
+    
     setLoading(true);
-
+    
     await uploadBytes(fileRef, file);
     const photoURL = await getDownloadURL(fileRef);
-
+    
     props.updateProfile(currentUser, { photoURL });
-
+    
     setLoading(false);
     alert("Uploaded file!");
   }
-
+  
   useEffect(() => {
     if (props.user && props.user.photoURL) {
       setPhotoURL(props.user.photoURL);
     }
     getUserInfo();
-  }, [data, props.user]);
+  }, [data,props.user]);
   // ------------------
   const runBothFunctions = () => {
     setShowModal(true);
     setEdit(true);
   };
-
+  
+  if (dataloading) {
+    return <h1>Loading</h1>;
+  }
   return (
     <>
       <NavBar />
       <div className="main flex justify-center items-center gap-14 mt-16">
         {/* profile picture */}
+        {console.log("hi")}
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Avatar src={photoURL} sx={{ width: 150, height: 150 }} />
           <input type="file" onChange={handleImageChange} />
@@ -127,6 +133,7 @@ function UserPage(props) {
       </div>
       <Status
         data={data}
+        user={props.user}
       />
     </>
   );

@@ -21,9 +21,9 @@ function App() {
   const [user, setUser] = useState('');
   const navigate = useNavigate();
 
-
   // Authentication listener
   const auth = getAuth();
+  
   const authListener = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
