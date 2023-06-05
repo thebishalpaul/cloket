@@ -25,13 +25,34 @@ function Status(props) {
     }
     useEffect(() => {
         getData();
-    }, []);
+    },[]);
+
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         try {
+    //             const productsRef = db.collection('productStatus').where("email", "==", props.user.email);
+    //             const snapshot = await productsRef.get();
+
+    //             const productsData = snapshot.docs.map((doc) => ({
+    //                 id: doc.id,
+    //                 ...doc.data(),
+    //             }));
+
+    //             setProducts(productsData);
+    //         } catch (error) {
+    //             console.error('Error fetching products:', error);
+    //         }
+    //     };
+
+    //     fetchProducts();
+    // }, []);
+
+
     return (
         <>
             <div className="header" style={{ display: "flex" }}>
                 <div className="status">
                     Status: {item}
-                    {/* {console.log(products)} */}
                 </div>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                     <InputLabel id="demo-select-small-label">Select Item</InputLabel>
@@ -46,13 +67,13 @@ function Status(props) {
                             <em>None</em>
                         </MenuItem>
                         {
-                            products.forEach(element => {
-                                <MenuItem value={element.brand}>
+                            products.map((element) => {
+                                // console.log(element.id);
+                                <MenuItem key={element.id} value={element.brand}>
                                     {element.brand}
                                 </MenuItem>
                             })
                         }
-
                     </Select>
                 </FormControl>
             </div>
