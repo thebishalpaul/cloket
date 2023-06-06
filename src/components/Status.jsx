@@ -14,8 +14,8 @@ function Status(props) {
         setItem(event.target.value);
     };
 
+    let data = []
     async function getData() {
-        let data = []
         const q = query(collection(db, "productStatus"), where("email", "==", props.user.email));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
@@ -23,34 +23,29 @@ function Status(props) {
         });
         setProducts(data);
     }
+
     useEffect(() => {
         getData();
+        // console.log(products);
     }, []);
 
     // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         try {
-    //             const productsRef = db.collection('productStatus').where("email", "==", props.user.email);
-    //             const snapshot = await productsRef.get();
-
-    //             const productsData = snapshot.docs.map((doc) => ({
-    //                 id: doc.id,
-    //                 ...doc.data(),
-    //             }));
-
-    //             setProducts(productsData);
-    //         } catch (error) {
-    //             console.error('Error fetching products:', error);
-    //         }
-    //     };
-
-    //     fetchProducts();
+    //     const getData = async () => {
+    //         let data = []
+    //         const q = query(collection(db, "productStatus"), where("email", "==", props.user.email));
+    //         const querySnapshot = await getDocs(q);
+    //         querySnapshot.forEach((doc) => {
+    //             data.push({ ...doc.data(), id: doc.id })
+    //         });
+    //         setProducts(data);
+    //     }
+    //     console.log(products);
+    //     getData();
     // }, []);
-
 
     return (
         <>
-            <div className="flex mt-10   justify-center h-auto">
+            <div className="flex mt-10 justify-center h-auto">
                 <div className="mx-28 sm:w-3/6 w-full bg-Cloket p-0 flex flex-col">
                     <div className="flex justify-between flex-row p-3">
                         <h1
@@ -59,6 +54,8 @@ function Status(props) {
                         >
                             Status: {item}
                         </h1>
+
+                        {/* Drop Down */}
                         <FormControl
                             sx={{ m: 1, minWidth: 120 }}
                             size="small"
@@ -79,9 +76,11 @@ function Status(props) {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
+
+                                {/* loop not working */}
                                 {
-                                    products.map((element) => {
-                                        // console.log(element.id);
+                                    data.map((element) => {
+                                        // console.log(element.brand);
                                         <MenuItem className="text-Cloket" key={element.id} value={element.brand} >
                                             {element.brand}
                                         </MenuItem>

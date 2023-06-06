@@ -85,11 +85,14 @@ function UserPage(props) {
   return (
     <>
       <NavBar />
-      <div className="main flex justify-center items-center gap-14 mt-16">
-        {/* profile picture */}
-        {console.log("hi")}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-        <Avatar
+      <div
+        className="main flex sm:flex-row   w-full justify-center
+       items-center sm:gap-0 gap-4 sm:mx-0  
+       -mx-4 sm:mt-16"
+      >
+        <div className=" relative flex flex-col mb-1 sm:w-56">
+          {/* Profile Picture */}
+          <Avatar
             src={photoURL}
             sx={{
               width: 150,
@@ -100,12 +103,13 @@ function UserPage(props) {
               },
             }}
           />
+
           {/* <input type="file" onChange={handleImageChange} /> */}
 
           {/* Upload Button */}
           <label
             htmlFor="uploadButton"
-            // className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex items-center justify-center"
           >
             <input
               type="file"

@@ -75,7 +75,7 @@ function EditForm(props) {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <input
+        <textarea
           type="text"
           name=""
           id=""
