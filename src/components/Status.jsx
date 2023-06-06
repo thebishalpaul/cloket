@@ -14,8 +14,8 @@ function Status(props) {
         setItem(event.target.value);
     };
 
-    let data = []
     async function getData() {
+        let data = []
         const q = query(collection(db, "productStatus"), where("email", "==", props.user.email));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
@@ -79,7 +79,7 @@ function Status(props) {
 
                                 {/* loop not working */}
                                 {
-                                    data.map((element) => {
+                                    products.map((element) => {
                                         // console.log(element.brand);
                                         <MenuItem className="text-Cloket" key={element.id} value={element.brand} >
                                             {element.brand}
