@@ -15,7 +15,7 @@ function EditForm(props) {
     })
       .then(() => {
         console.log(
-          "A New Document Field has been added to an existing document"
+          "updated document"
         );
       })
       .catch((error) => {

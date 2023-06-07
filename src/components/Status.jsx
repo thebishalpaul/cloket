@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -7,8 +7,8 @@ import { db } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 function Status(props) {
-    const [item, setItem] = React.useState('');
-    const [products, setProducts] = React.useState([]);
+    const [item, setItem] = useState('');
+    const [products, setProducts] = useState([]);
 
     const handleChange = (event) => {
         setItem(event.target.value);
@@ -42,7 +42,6 @@ function Status(props) {
     //     console.log(products);
     //     getData();
     // }, []);
-
     return (
         <>
             <div className="flex mt-10 justify-center h-auto">
@@ -76,11 +75,15 @@ function Status(props) {
                                 <MenuItem value="">
                                     <em>None</em>
                                 </MenuItem>
+                                {/* <MenuItem className="text-Cloket" key={products[0].id} value={products[0].brand} >
+                                    {products[0].brand}
+                                </MenuItem> */}
 
                                 {/* loop not working */}
+
                                 {
                                     products.map((element) => {
-                                        // console.log(element.brand);
+                                        // console.log(element);
                                         <MenuItem className="text-Cloket" key={element.id} value={element.brand} >
                                             {element.brand}
                                         </MenuItem>

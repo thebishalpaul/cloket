@@ -6,7 +6,7 @@ import NavBar from "./NavBar";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Avatar from "@mui/material/Avatar";
-import { FiCamera } from "react-icons/fi";
+// import { FiCamera } from "react-icons/fi";
 import { AiFillEdit } from "react-icons/ai";
 import Status from "./Status";
 
@@ -18,6 +18,7 @@ function UserPage(props) {
 
 
   let userId = props.user.uid;
+
   async function getUserInfo() {
     const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
@@ -51,7 +52,7 @@ function UserPage(props) {
 
 
   const handleUpload = () => {
-    upload(image, props.user, setLoading);
+    upload(image, props.user, setLoading, setImage);
   };
 
   async function upload(file, currentUser, setLoading) {
@@ -63,16 +64,21 @@ function UserPage(props) {
     const photoURL = await getDownloadURL(fileRef);
 
     props.updateProfile(currentUser, { photoURL });
-
+    setImage("");
     setLoading(false);
+    alert("file uploaded");
   }
 
+  // reloading component based on edit and upload pic
   useEffect(() => {
     if (props.user && props.user.photoURL) {
       setPhotoURL(props.user.photoURL);
     }
     getUserInfo();
-  }, [data, props.user]);
+
+    // photoURL value gets changed but component doesn't rerender automatically, needs refresh to display updates. After adding [upload] it rerenders but continues rendering in loop
+  }, [edit, upload]);
+
   // ------------------
   const runBothFunctions = () => {
     setShowModal(true);
@@ -92,6 +98,9 @@ function UserPage(props) {
       >
         <div className=" relative flex flex-col mb-1 sm:w-56">
           {/* Profile Picture */}
+
+          {/* testing rendering of component */}
+          {/* {console.log("hi")} */}
           <Avatar
             src={photoURL}
             sx={{
@@ -103,8 +112,6 @@ function UserPage(props) {
               },
             }}
           />
-
-          {/* <input type="file" onChange={handleImageChange} /> */}
 
           {/* Upload Button */}
           <label
