@@ -7,12 +7,26 @@ import { db } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 function Status(props) {
-    const [item, setItem] = useState('');
-    const [products, setProducts] = useState([]);
+    const [statusCode, setStatusCode] = useState('');
+    const [products, setProducts] = useState({});
+    const [status, setStatus] = useState('');
 
     const handleChange = (event) => {
-        setItem(event.target.value);
+        setStatusCode(event.target.value);
+        console.log(event.target.value);
+        statusUpdate(statusCode);
     };
+    function statusUpdate(statusCode) {
+        if (statusCode == 0) {
+            setStatus("Under review")
+        }
+        else if (statusCode == 1) {
+            setStatus("Approved")
+        }
+        else if(statusCode == 2){
+            setStatus("Ready for Pickup")
+        }
+    }
 
     async function getData() {
         let data = []
@@ -23,10 +37,8 @@ function Status(props) {
         });
         setProducts(data);
     }
-
     useEffect(() => {
         getData();
-        // console.log(products);
     }, []);
 
     // useEffect(() => {
@@ -42,6 +54,11 @@ function Status(props) {
     //     console.log(products);
     //     getData();
     // }, []);
+
+
+
+    // console.log(selectItem);
+
     return (
         <>
             <div className="flex mt-10 justify-center h-auto">
@@ -51,7 +68,7 @@ function Status(props) {
                             className="font-syne ml-0 pt-1 font-semibold text-white 
             sm:text-4xl text-lg"
                         >
-                            Status: {item}
+                            Status: {status}
                         </h1>
 
                         {/* Drop Down */}
@@ -67,7 +84,7 @@ function Status(props) {
                             <Select
                                 labelId="demo-select-small-label"
                                 id="demo-select-small"
-                                value={item}
+                                value={statusCode}
                                 label="items"
                                 className="text-Cloket font-syne font-bold "
                                 onChange={handleChange}
@@ -80,15 +97,23 @@ function Status(props) {
                                 </MenuItem> */}
 
                                 {/* loop not working */}
-
-                                {
+                                {/* {
                                     products.map((element) => {
                                         // console.log(element);
-                                        <MenuItem className="text-Cloket" key={element.id} value={element.brand} >
+                                        <MenuItem className="text-Cloket" value={element.brand} >
                                             {element.brand}
                                         </MenuItem>
                                     })
-                                }
+                                } */}
+                                <MenuItem className="text-Cloket" value={products[0]?.statusNumber} >
+                                    {products[0]?.brand}
+                                </MenuItem>
+                                <MenuItem className="text-Cloket" value={products[1]?.statusNumber} >
+                                    {products[1]?.brand}
+                                </MenuItem>
+                                <MenuItem className="text-Cloket" value={products[2]?.statusNumber} >
+                                    {products[2]?.brand}
+                                </MenuItem>
                             </Select>
                         </FormControl>
                     </div>

@@ -14,7 +14,7 @@ function UserPage(props) {
   const [data, setData] = useState({});
   const [edit, setEdit] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [dataloading, setDataLoading] = useState(true);
+  const [dataloading, setDataLoading] = useState(false);
 
 
   let userId = props.user.uid;
@@ -76,8 +76,8 @@ function UserPage(props) {
     }
     getUserInfo();
 
-    // photoURL value gets changed but component doesn't rerender automatically, needs refresh to display updates. After adding [upload] it rerenders but continues rendering in loop
-  }, [edit, upload]);
+    // photoURL value gets changed but component doesn't render automatically, needs refresh to display updates. After adding [data] it renders but continues rendering in loop
+  }, [data, props.user]);
 
   // ------------------
   const runBothFunctions = () => {
@@ -101,6 +101,7 @@ function UserPage(props) {
 
           {/* testing rendering of component */}
           {/* {console.log("hi")} */}
+          
           <Avatar
             src={photoURL}
             sx={{
