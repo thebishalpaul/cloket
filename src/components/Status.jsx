@@ -13,33 +13,40 @@ function Status(props) {
 
     const handleChange = (event) => {
         setStatusCode(event.target.value);
-        console.log(event.target.value);
-        statusUpdate(statusCode);
+        // console.log(event.target.value);
+        statusUpdate(event.target.value);
     };
-    function statusUpdate(statusCode) {
-        if (statusCode == 0) {
-            setStatus("Under review")
+    function statusUpdate(code) {
+        if (code === 0) {
+            setStatus("Under review");
+            // setStatusCode("");  //needs to be enabled for fields with same value
         }
-        else if (statusCode == 1) {
-            setStatus("Approved")
+        else if (code === 1) {
+            setStatus("Approved");
+            // setStatusCode("");
         }
-        else if(statusCode == 2){
-            setStatus("Ready for Pickup")
+        else if (code === 2) {
+            setStatus("Ready for Pickup");
+            // setStatusCode("");
+        }
+        else{
+            setStatus("");
         }
     }
 
-    async function getData() {
-        let data = []
-        const q = query(collection(db, "productStatus"), where("email", "==", props.user.email));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            data.push({ ...doc.data(), id: doc.id })
-        });
-        setProducts(data);
-    }
+
+    let data = []
     useEffect(() => {
-        getData();
-    }, []);
+        async function getData() {
+            const q = query(collection(db, "productStatus"), where("email", "==", props.user.email || ""));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                data.push({ ...doc.data(), id: doc.id })
+            });
+            setProducts(data);
+        }
+        getData()
+    }, [products]);
 
     // useEffect(() => {
     //     const getData = async () => {
@@ -105,6 +112,16 @@ function Status(props) {
                                         </MenuItem>
                                     })
                                 } */}
+
+                                {/* {
+                                Object.keys(products).map(function (keyName, keyIndex) {
+                                    <MenuItem className="text-Cloket" value={products[keyName].brand} >
+                                        {products[keyName].brand}
+                                    </MenuItem>
+                                    // console.log(products[keyName].brand)
+                                    // and a[keyName] to get its value
+                                })} */}
+
                                 <MenuItem className="text-Cloket" value={products[0]?.statusNumber} >
                                     {products[0]?.brand}
                                 </MenuItem>

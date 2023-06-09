@@ -8,7 +8,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { createUserWithEmailAndPassword,updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { db } from './firebase'
 import { setDoc, doc } from "firebase/firestore";
 import Home from './components/Home';
@@ -22,20 +22,21 @@ function App() {
   const navigate = useNavigate();
 
   // Authentication listener
-  const auth = getAuth();
   
-  const authListener = () => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        clearInputs();
-        setUser(user);
-        // console.log(user);
-      } else { setUser('') }
-    });
-  }
-
+  
+  
   // //React listener.
+  const auth = getAuth();
   useEffect(() => {
+    const authListener = () => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          clearInputs();
+          setUser(user);
+          // console.log(user);
+        } else { setUser('') }
+      });
+    }
     authListener();
   }, []);
 
@@ -95,12 +96,12 @@ function App() {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (res) => {
-          alert("Sign Up Successful!!")
-        const ref = doc(db,"users",res.user.uid);
+        alert("Sign Up Successful!!")
+        const ref = doc(db, "users", res.user.uid);
         await setDoc(ref, {
           name: name,
           phone: phone,
-          address:address
+          address: address
         })
           .then(() => {
             alert('user created 👍');
@@ -163,7 +164,7 @@ function App() {
         <Route path="/SignUp" element={
           <SignUp />}
         />
-        
+
       </Routes>
     </>
   );
