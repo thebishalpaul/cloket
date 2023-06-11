@@ -11,6 +11,7 @@ function Status(props) {
     const [products, setProducts] = useState({});
     const [status, setStatus] = useState('');
 
+
     const handleChange = (event) => {
         setStatusCode(event.target.value);
         // console.log(event.target.value);
@@ -19,26 +20,28 @@ function Status(props) {
     function statusUpdate(code) {
         if (code === 0) {
             setStatus("Under review");
-            // setStatusCode("");  //needs to be enabled for fields with same value
+            // setStatusCode(null);  //needs to be enabled for fields with same value
         }
         else if (code === 1) {
             setStatus("Approved");
-            // setStatusCode("");
+            // setStatusCode(null);
         }
         else if (code === 2) {
             setStatus("Ready for Pickup");
-            // setStatusCode("");
+            // setStatusCode(null);
         }
-        else{
+        else {
             setStatus("");
         }
     }
 
+    function selectedVal(e) {
 
+    }
     let data = []
     useEffect(() => {
         async function getData() {
-            const q = query(collection(db, "productStatus"), where("email", "==", props.user.email || ""));
+            const q = query(collection(db, "productStatus"), where("email", "==", props.user.email || ""),where("status","==",true||""));
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 data.push({ ...doc.data(), id: doc.id })
@@ -107,7 +110,7 @@ function Status(props) {
                                 {/* {
                                     products.map((element) => {
                                         // console.log(element);
-                                        <MenuItem className="text-Cloket" value={element.brand} >
+                                        <MenuItem className="text-Cloket" value={element.statusNumber} >
                                             {element.brand}
                                         </MenuItem>
                                     })
@@ -122,7 +125,7 @@ function Status(props) {
                                     // and a[keyName] to get its value
                                 })} */}
 
-                                <MenuItem className="text-Cloket" value={products[0]?.statusNumber} >
+                                <MenuItem className="text-Cloket" value={products[0]?.statusNumber} onChange={selectedVal} >
                                     {products[0]?.brand}
                                 </MenuItem>
                                 <MenuItem className="text-Cloket" value={products[1]?.statusNumber} >
