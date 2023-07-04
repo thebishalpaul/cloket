@@ -6,8 +6,9 @@ import NavBar from "./NavBar";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Avatar from "@mui/material/Avatar";
-// import { FiCamera } from "react-icons/fi";
+import { FiCamera } from "react-icons/fi";
 import { AiFillEdit } from "react-icons/ai";
+import Alert from '@mui/material/Alert';
 import Status from "./Status";
 
 function UserPage(props) {
@@ -91,6 +92,7 @@ function UserPage(props) {
   return (
     <>
       <NavBar />
+
       <div
         className="main flex sm:flex-row   w-full justify-center
        items-center sm:gap-0 gap-4 sm:mx-0  
@@ -101,7 +103,9 @@ function UserPage(props) {
 
           {/* testing rendering of component */}
           {/* {console.log("hi")} */}
-          
+         
+          {/* <Alert severity="error">{imgError}</Alert> */}
+
           <Avatar
             src={photoURL}
             sx={{
@@ -114,10 +118,41 @@ function UserPage(props) {
             }}
           />
 
+
           {/* Upload Button */}
           <label
             htmlFor="uploadButton"
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex flex-col items-center justify-center"
+          >
+            <input className="opacity-0 cursor-pointer w-44 h-full" />
+            <div>
+              <button
+                className="text-white   bg-gray-600
+                w-10 h-4 flex
+                 items-center justify-center
+              font-syne py-3 rounded-2xl mt-28 bg-opacity-60 "
+              >
+                {/* text-white   bg-Cloket 
+                hover:bg-opacity-50 hover:bg-Cloket
+                 sm:text-base text-xs w-20 h-4 flex
+                 items-center justify-center
+              font-syne p-2 mt-20 mr-16 */}
+
+                <FiCamera
+                  size={18}
+                  style={{
+                    marginRight: "0",
+                    color: "black",
+                  }}
+                  className="Fa-class"
+                />
+              </button>
+            </div>
+          </label>
+          {/* Additional Upload Button */}
+          <label
+            className="absolute inset-0 flex flex-col items-center justify-center 
+            mt-12"
           >
             <input
               type="file"
@@ -125,12 +160,13 @@ function UserPage(props) {
               onChange={handleImageChange}
               className="opacity-0 cursor-pointer w-44 h-full"
             />
-            <div className="-mx-26 ">
+            <div>
               <button
                 disabled={loading || !image}
                 onClick={handleUpload}
-                className="text-white block bg-Cloket sm:text-base text-xs 
-              font-syne p-1"
+                className="text-white bg-Cloket 
+               text-lg w-20 h-4 flex items-center justify-center 
+               font-syne p-3 mt-40 mr-16 rounded-lg"
               >
                 Upload
               </button>

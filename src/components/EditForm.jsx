@@ -14,9 +14,7 @@ function EditForm(props) {
       address: params.address,
     })
       .then(() => {
-        console.log(
-          "updated document"
-        );
+        console.log("updated document");
       })
       .catch((error) => {
         console.log(error);
@@ -26,7 +24,6 @@ function EditForm(props) {
     <>
       {" "}
       <div className=" sm:flex sm:flex-row flex-col hidden sm:gap-28 ">
-      
         <label htmlFor="name" className="font-bold text-base sm:text-lg ">
           Name
         </label>
@@ -61,29 +58,38 @@ function EditForm(props) {
           type="text"
           name=""
           id=""
-          className="font-light font-syne border border-Cloket w-auto"
+          className="font-light font-syne border  border-Cloket w-auto"
           placeholder="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+
         <input
           type="number"
           name=""
           id=""
-          className="font-light font-syne border border-Cloket"
+          className="font-light font-syne border  border-Cloket"
           placeholder="phone"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
         <textarea
-          type="text"
           name=""
           id=""
+          className="font-light font-syne border  border-Cloket w-auto"
           placeholder="address"
-          className="font-light font-syne border border-Cloket"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
+        {/* 
+        <textarea
+          name=""
+          id=""
+          className="font-light font-syne border border-Cloket w-auto"
+          placeholder="address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        /> */}
       </div>
       <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
         <button
